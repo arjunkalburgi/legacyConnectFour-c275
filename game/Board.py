@@ -124,6 +124,15 @@ class board:
 					return self.board[6-j][6-i]
 		return False
 
+	def clear_board(self): 
+		self.board = ([0,0,0,0,0,0,0],
+					  [0,0,0,0,0,0,0],
+					  [0,0,0,0,0,0,0],
+					  [0,0,0,0,0,0,0],
+					  [0,0,0,0,0,0,0],
+					  [0,0,0,0,0,0,0],
+					  [0,0,0,0,0,0,0])
+
 	# overwriting equ
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
@@ -460,17 +469,18 @@ def twoupleft(b, i, col):
 		return True
 
 def twodownleft(b, i, col): 
-	print("row", i+1)
-	print("col", col-1)
-	print("row2", i+2)
-	print("col2", col+2)
+	#print("row", i+1)
+	#print("col", col-1)
+	#print("row2", i+2)
+	#print("col2", col+2)
 	try:
 		b[i+1][col-1] == b[i+2][col-2]
 	except IndexError:
-		print("row", i+1)
-		print("col", col-1)
-		print("row2", i+2)
-		print("col2", col+2)
+		#print("row", i+1)
+		#print("col", col-1)
+		#print("row2", i+2)
+		#print("col2", col+2)
+		pass
 	return b[i+1][col-1] == b[i+2][col-2]
 
 def leftuprightdown(b,i,col): 
