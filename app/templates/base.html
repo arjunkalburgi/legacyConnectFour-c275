@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% if title %}
+	<title>{{title}} - c275</title>
+	{% else %}
+	<title>Welcome to a c275 project</title>
+	{% endif %}
+
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript">
+		var fart;
+		function play(col) {
+			/*
+			function gets col, 
+			it can ajax to get access to the rest of the board
+
+			This function should basically reflect everything from test.py
+			*/
+			
+			// ajax request for the board 
+			// based on the users click selection
+			$.post('/user_play/',
+				{col: col},
+				function(json) {
+					board = json.board;
+					fart = json;
+					console.log(json);
+					update_board(board);
+				});
+
+			// check win
+			$.post('/check_win/', 
+				{}, 
+				function(json) {
+					player = json.player;
+					if (player) {
+						console.log("Congratulations, "); 
+						console.log(player); 
+						console.log(" won!");
+
+						$(message).text("Congratulations!"); 
+						$(message).show()
+
+						// end game and refresh. 
+						console.log("yoyo");
+						// end(player);
+
+					}
+				});
+
+			// go get comps play board
+			$.post('/comp_play/',
+				{}, 
+				function(json) {
+					board = json.board; 
+					console.log(json); 
+					update_board(board)
+				});
+
+			// check win
+			$.post('/check_win/', 
+				{}, 
+				function(json) {
+					player = json.player;
+					if (player) {
+						console.log("Congratulations, "); 
+						console.log(player); 
+						console.log(" won!");
+
+						$(message).text("Sorry, you suck!"); 
+						$(message).show()
+
+						// end game and refresh. 
+						console.log("yoyo");
+						// end(player);
+					}
+				});
+	
+		}
+
+		function update_board(board) {
+			for (r=0; r<7; r++) {
+				for (c=0; c<7; c++) {
+					if (board[r][c] == 2) {
+						document.getElementById(String(r)+String(c)).style.backgroundColor = "red";
+					}
+					if (board[r][c] == 1) {
+						document.getElementById(String(r)+String(c)).style.backgroundColor = "yellow";
+					}
+				}
+			}
+		}
+
+		function end(player) {
+			while (1) {}
+		}
+	</script>
+</head>
+<body>
+	<div style="background-color: white; text-align: center">
+		<br/>
+		<div>Connect4 <br/><a href="/startup">Home</a> | <a href="/game">Game</a> | <a href="/more">More</a></div>
+		<hr>
+		<div id="message">
+			lol			
+		</div>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<ul>
+				{% for message in messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		{% endwith %}
+		<hr>
+		<br/>
+	</div>
+	{% block content %}{% endblock %}
+</body>
+</html>
